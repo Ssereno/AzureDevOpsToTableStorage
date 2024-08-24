@@ -1,12 +1,21 @@
-﻿using System.Reflection.Metadata;
-using Azure;
+﻿using Azure;
 using Azure.Data.Tables;
 
 namespace AzureDevOpsToPowerBI
 {
+    /// <summary>
+    /// Manager to handle (add, update and delete) with operations on azure table.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     internal static class AzureTablesManager<T> where T : class, ITableEntity
     {
-        internal static async Task InsertIntoAzureTable(List<T> workItems, string tableName)
+        /// <summary>
+        /// Insert new data into a azure table.
+        /// </summary>
+        /// <param name="workItems">List of values to add.</param>
+        /// <param name="tableName">Table name to create.</param>
+        /// <returns></returns>
+        internal static async Task InsertIntoAzureTableAsync(List<T> workItems, string tableName)
         {
             var tableClient = new TableClient(AppSettings.AzureStorageConnectionString, tableName);
             await tableClient.CreateIfNotExistsAsync();
@@ -17,6 +26,29 @@ namespace AzureDevOpsToPowerBI
             }
         }
 
+        /// <summary>
+        /// Insert or update data on a azure table.
+        /// </summary>
+        /// <param name="workItems">List of values to add.</param>
+        /// <param name="tableName">Table name to create.</param>
+        /// <returns></returns>
+        internal static async Task UpsertIntoAzureTableAsync(List<T> workItems, string tableName)
+        {
+            var tableClient = new TableClient(AppSettings.AzureStorageConnectionString, tableName);
+            await tableClient.CreateIfNotExistsAsync();
+
+            foreach (var workItem in workItems)
+            {
+                await tableClient.UpsertEntityAsync(workItem,TableUpdateMode.Merge);
+            }
+        }
+
+        /// <summary>
+        /// Insert data in bulk (100 itens) on a azure table.
+        /// </summary>
+        /// <param name="workItems">List of values to add.</param>
+        /// <param name="tableName">Table name to create.</param>
+        /// <returns></returns>
         internal static async Task InsertIntoAzureTableBulkAsync(List<T> workItems, string tableName)
         {
             var tableClient = new TableClient(AppSettings.AzureStorageConnectionString, tableName);
@@ -43,7 +75,11 @@ namespace AzureDevOpsToPowerBI
             await Task.WhenAll(tasks);
         }
 
-
+        /// <summary>
+        /// Delete the content of a azure table.
+        /// </summary>
+        /// <param name="tableName">Table name to delete data.</param>
+        /// <returns></returns>
         internal static async Task DeleteAllEntitiesAsync(string tableName)
         {
             var tableClient = new TableClient(AppSettings.AzureStorageConnectionString, tableName);
@@ -57,6 +93,11 @@ namespace AzureDevOpsToPowerBI
             }
         }
 
+        /// <summary>
+        /// Delete a table.
+        /// </summary>
+        /// <param name="tableName">Table name to delete.</param>
+        /// <returns></returns>
         internal static async Task DeleteTableAsync(string tableName)
         {
             try

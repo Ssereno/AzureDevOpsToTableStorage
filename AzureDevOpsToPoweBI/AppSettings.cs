@@ -10,36 +10,42 @@ namespace AzureDevOpsToPowerBI
             }
         }
 
-        internal static string PersonalAccessToken { 
+        public static string PersonalAccessToken { 
             get {
                 return "";
             }
         }
 
-        internal static string AzureStorageConnectionString { 
+        public static string AzureStorageConnectionString { 
             get {
                 return "";
             }
         }
 
-        internal static string UserStoriesTableName { 
+        public static string UserStoriesTableName { 
             get {
                 return "UserStories";
             }
         }           
-        internal static string TasksTableName { 
+        public static string TasksTableName { 
             get {
                 return "Tasks";
             }
         }
-        internal static string AreasTableName { 
+        public static string AreasTableName { 
             get {
                 return "Areas";
             }
         }
-        internal static string IterationTableName { 
+        public static string IterationTableName { 
             get {
                 return "Iteration";
+            }
+        }
+
+        public static string SprintCapacityTableName { 
+            get {
+                return "SprintCapacity";
             }
         }
     }

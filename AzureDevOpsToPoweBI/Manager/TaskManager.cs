@@ -1,5 +1,3 @@
-using System;
-using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -30,7 +28,7 @@ namespace AzureDevOpsToPowerBI
                 tasks.Add(new TfsTasks
                 {
                     PartitionKey = projectname,
-                    RowKey = Guid.NewGuid().ToString(),
+                    RowKey = item.WorkItemId.ToString(),
                     Title= item.Title,
                     State= item.State,
                     WorkItemId= item.WorkItemId,

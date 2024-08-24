@@ -4,8 +4,17 @@ using System.Text.Json.Serialization;
 
 namespace AzureDevOpsToPowerBI
 {
+    /// <summary>
+    /// Manager to handle with the area entity.
+    /// </summary>
     internal static class AreaManager
     {
+        /// <summary>
+        /// Get all the areas for the selected project.
+        /// </summary>
+        /// <param name="projectname">The project name.</param>
+        /// <param name="areapath">The Area or project iteration.</param>
+        /// <returns></returns>
         internal static async Task<List<Area>> GetAreas(string projectname, string areapath)
         {
             var client = new HttpClient();
@@ -27,7 +36,7 @@ namespace AzureDevOpsToPowerBI
                 areas.Add(new Area
                 {
                     PartitionKey = projectname,
-                    RowKey = Guid.NewGuid().ToString(),
+                    RowKey = item.AreaSK.ToString(),
                     AreaPath = item.AreaPath,
                     AreaSK = item.AreaSK    
                 });
@@ -36,6 +45,9 @@ namespace AzureDevOpsToPowerBI
             return areas;
         }
 
+        /// <summary>
+        /// Allow access to the json response.
+        /// </summary>
         public class WorkItemResponse
         {
             [JsonPropertyName("value")]

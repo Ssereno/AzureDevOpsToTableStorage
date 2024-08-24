@@ -2,6 +2,9 @@ using System.Text.Json.Serialization;
 
 namespace AzureDevOpsToPowerBI
 {
+    /// <summary>
+    /// Entity that represent an area.
+    /// </summary>
     public class Area: AzureTableBase
     {
         [JsonPropertyName("AreaSK")]

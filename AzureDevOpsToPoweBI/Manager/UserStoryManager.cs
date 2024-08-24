@@ -1,10 +1,5 @@
-using System;
-using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Threading.Tasks;
-using Microsoft.Data.OData;
-using Azure;
-using Azure.Data.Tables;
+
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Collections.Generic;
@@ -35,7 +30,7 @@ namespace AzureDevOpsToPowerBI
                 userStories.Add(new UserStory
                 {
                     PartitionKey = projectname,
-                    RowKey = Guid.NewGuid().ToString(),
+                    RowKey = item.WorkItemId.ToString(),
                     Title= item.Title,
                     State= item.State,
                     WorkItemId= item.WorkItemId,

@@ -30,13 +30,13 @@ namespace AzureDevOpsToPowerBI
                 iteration.Add(new Iteration
                 {
                     PartitionKey = projectname,
-                    RowKey = Guid.NewGuid().ToString(),
+                    RowKey = item.IterationSK.ToString(),
                     IterationName = item.IterationName,
                     IterationPath = item.IterationPath,
                     IterationSK = item.IterationSK,
                     StartDate = item.StartDate,
                     EndDate = item.EndDate,
-                    SprintHoursCapacity = 0 //await SprintCapacityManager.GetSprintCapacityById(projectname, teamName, item.IterationSK)
+                    SprintHoursCapacity = 0
                 });
             }
 

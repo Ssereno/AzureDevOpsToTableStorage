@@ -2,6 +2,9 @@ using System.Text.Json.Serialization;
 
 namespace AzureDevOpsToPowerBI
 {
+    /// <summary>
+    /// Entity that represent an iteration.
+    /// </summary>
     public class Iteration:AzureTableBase
     {
         [JsonPropertyName("IterationName")]
