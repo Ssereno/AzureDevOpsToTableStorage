@@ -16,7 +16,7 @@ namespace AzureDevOpsToPowerBI
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic",
                 Convert.ToBase64String(System.Text.ASCIIEncoding.ASCII.GetBytes($"{string.Empty}:{AppSettings.PersonalAccessToken}")));
 
-            string tfsUri = string.Format($"{AppSettings.TfsUri}/{{0}}/_odata/v4.0-preview/WorkItems?$filter=WorkItemType eq 'User Story' and not contains(Title, 'sprint') and startswith(Area/AreaPath,'{{1}}') and not contains(State, 'Removed') and CreatedDate ge 2023-01-01T00:00:00Z &$orderby=CreatedDate desc&$select=WorkItemId,Title,WorkItemType,State,StoryPoints,LeadTimeDays,CycleTimeDays,CreatedDate,ResolvedDate,AreaSK,IterationSK,ActivatedDate",projectname,areapath);
+            string tfsUri = string.Format($"{AppSettings.TfsUri}/{{0}}/_odata/v4.0-preview/WorkItems?$select=WorkItemId,Title,WorkItemType,State,StoryPoints,LeadTimeDays,CycleTimeDays,CreatedDate,ResolvedDate,AreaSK,IterationSK,ActivatedDate,ClosedDate,ParentWorkItemId, TagNames&$filter=WorkItemType eq 'User Story' and startswith(Area/AreaPath,'{{1}}') and not contains(State, 'Removed') and CreatedDate ge 2023-01-01T00:00:00Z &$orderby=CreatedDate desc",projectname,areapath);
 
             var response = await client.GetAsync(tfsUri);
             response.EnsureSuccessStatusCode();
@@ -41,7 +41,10 @@ namespace AzureDevOpsToPowerBI
                     ResolvedDate= item.ResolvedDate,
                     AreaSK= item.AreaSK,
                     IterationSK= item.IterationSK,
-                    ActivatedDate= item.ActivatedDate
+                    ActivatedDate= item.ActivatedDate,
+                    ClosedDate = item.ClosedDate,
+                    ParentWorkItemId = item.ParentWorkItemId,
+                    TagNames = item.TagNames
                 });
             }
 

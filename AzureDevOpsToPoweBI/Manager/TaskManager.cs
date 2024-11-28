@@ -14,7 +14,7 @@ namespace AzureDevOpsToPowerBI
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic",
                 Convert.ToBase64String(System.Text.ASCIIEncoding.ASCII.GetBytes($"{string.Empty}:{AppSettings.PersonalAccessToken}")));
                 
-            string tfsUri = string.Format($"{AppSettings.TfsUri}/{{0}}/_odata/v4.0-preview/WorkItems?$select=WorkItemId,Title,WorkItemType,State,AreaSK,IterationSK,TagNames,ParentWorkItemId,OriginalEstimate,CompletedWork&$filter=WorkItemType eq 'Task' and startswith(Area/AreaPath,'{{1}}') and CreatedDate ge 2023-01-01T00:00:00Z&$orderby=CreatedDate desc",projectname,areapath);
+            string tfsUri = string.Format($"{AppSettings.TfsUri}/{{0}}/_odata/v4.0-preview/WorkItems?$select=WorkItemId,Title,WorkItemType,State,AreaSK,IterationSK,TagNames,ParentWorkItemId,OriginalEstimate,CompletedWork&$filter=WorkItemType eq 'Task' and startswith(Area/AreaPath,'{{1}}') and not contains(State, 'Removed') and CreatedDate ge 2023-01-01T00:00:00Z&$orderby=CreatedDate desc",projectname,areapath);
 
             var response = await client.GetAsync(tfsUri);
             response.EnsureSuccessStatusCode();

@@ -18,7 +18,9 @@ namespace AzureDevOpsToPowerBI
                     Tuple.Create("ResourceMonitor","ResourceMonitor\\Resource Monitor App","Resource Monitor App"),
                     Tuple.Create("WIPAnalyzer","WIPAnalyzer\\WIPAnalyzer App","WIPAnalyzer Team"),
                     Tuple.Create("ASM-APM","ASM-APM\\SMTA Team","SMTA Team"),
-                    Tuple.Create("IndustryTemplates","IndustryTemplates","Industry Templates")
+                    Tuple.Create("IndustryTemplates","IndustryTemplates","Industry Templates"),
+                    Tuple.Create("FEC","FEC\\FEC Team","FEC Team"),
+                    Tuple.Create("TwinzoConnector","TwinzoConnector\\TwinzoConnector Team","TwinzoConnector Team")
             };
            
             Console.Write("Clean data before sync.");
@@ -50,7 +52,7 @@ namespace AzureDevOpsToPowerBI
                 Console.Write($"Iterations for {tuple.Item1} Done. \n");
 
                 var SprintCapacity = await SprintCapacityManager.GetCapacityAsync(tuple.Item1,tuple.Item3);
-                await AzureTablesManager<SprintCapacity>.InsertIntoAzureTableBulkAsync(SprintCapacity,AppSettings.SprintCapacityTableName);
+                await AzureTablesManager<SprintCapacity>.UpsertIntoAzureTableAsync(SprintCapacity,AppSettings.SprintCapacityTableName);
             }
         }
     }

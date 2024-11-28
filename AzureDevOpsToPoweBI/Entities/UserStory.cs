@@ -40,5 +40,13 @@ namespace AzureDevOpsToPowerBI
         [JsonPropertyName("ActivatedDate")]
         public string? ActivatedDate{ get; set; }
 
+        [JsonPropertyName("ClosedDate")]
+        public string? ClosedDate{ get; set; }
+
+        [JsonPropertyName("ParentWorkItemId")]
+        public int? ParentWorkItemId{ get; set; }
+
+        [JsonPropertyName("TagNames")]
+        public string? TagNames{ get; set; }
     }
 }
