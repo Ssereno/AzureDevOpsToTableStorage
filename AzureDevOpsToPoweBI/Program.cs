@@ -14,13 +14,7 @@ namespace AzureDevOpsToPowerBI
             // List of projects to get data.
             // Project Name; Area Path, Team Name
             var appsProjects = new List<Tuple<string,string,string>>{
-                    Tuple.Create("FMM","FMM\\FMM Team","FMM Team"),
-                    Tuple.Create("ResourceMonitor","ResourceMonitor\\Resource Monitor App","Resource Monitor App"),
-                    Tuple.Create("WIPAnalyzer","WIPAnalyzer\\WIPAnalyzer App","WIPAnalyzer Team"),
-                    Tuple.Create("ASM-APM","ASM-APM\\SMTA Team","SMTA Team"),
-                    Tuple.Create("IndustryTemplates","IndustryTemplates","Industry Templates"),
-                    Tuple.Create("FEC","FEC\\FEC Team","FEC Team"),
-                    Tuple.Create("TwinzoConnector","TwinzoConnector\\TwinzoConnector Team","TwinzoConnector Team")
+                    Tuple.Create("ProjectA","ProjectA\\ProjectA Team","ProjectA Team")
             };
            
             Console.Write("Clean data before sync.");
