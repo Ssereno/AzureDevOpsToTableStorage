@@ -10,7 +10,7 @@ namespace AzureDevOpsToPowerBI
     {
         static async Task Main(string[] args)
         {
-            string asciiArt = @"
+            string asciiTitle = @"
                 _                          ____              ___              ____                   
                / \    _____   _ _ __ ___  |  _ \  _____   __/ _ \ _ __  ___  / ___| _   _ _ __   ___ 
               / _ \  |_  / | | | '__/ _ \ | | | |/ _ \ \ / / | | | '_ \/ __| \___ \| | | | '_ \ / __|
@@ -19,8 +19,7 @@ namespace AzureDevOpsToPowerBI
                                                                  |_|                |___/                                       
             ";
 
-            // Escrever o ASCII art no console
-            Console.WriteLine(asciiArt);
+            Console.WriteLine(asciiTitle);
 
             // Read settings.
             var connecionSettings = ConfigurationManager.GetSection("General") as GeneralSetting;
