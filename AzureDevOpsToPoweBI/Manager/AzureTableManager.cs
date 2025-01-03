@@ -93,6 +93,36 @@ namespace AzureDevOpsToPowerBI
             }
         }
 
+        /// Delete the content of azure table based on filter.
+        /// </summary>
+        /// <param name="tableName">Table name to delete data.</param>
+        /// <returns></returns>
+        internal static async Task DeleteAllEntitieswithWithFilterAsync(string tableName, string filter)
+        {
+            if (filter != null)
+            {
+                var tableClient = new TableClient(AppSettings.AzureStorageConnectionString, tableName);
+
+                // Get row that match with the filter.
+                Pageable<TableEntity> entities = tableClient.Query<TableEntity>(filter: filter);
+
+                foreach (var entity in entities)
+                {
+                    string partitionKey = entity.GetString("PartitionKey");
+                    string rowKey = entity.GetString("RowKey");
+
+                    try
+                    {
+                        await tableClient.DeleteEntityAsync(partitionKey, rowKey);
+                    }
+                    catch (RequestFailedException ex)
+                    {
+                        Console.WriteLine($"Failed to delete row: {ex.Message}");
+                    }
+                }
+            }
+        }
+
         /// <summary>
         /// Delete a table.
         /// </summary>

@@ -6,39 +6,22 @@ The goal of this project is synchronize a set of **AzureDevOps** workitems (*Use
 ### Basic Flow Diagram
 ![Azure](/AzureDevOpsToPoweBI/Diagrams/Overview.jpg)
 
-### Application settings
-There are a set of basic parameters that need to be supplied to the application for it to work:
+## Application settings
+There are a set of basic parameters that need to be supplied to the application for it to work.
+In the **app.config** you can set the following settings
 
-```C#
-internal static string TfsUri { 
-    get {return "Azure DevOps URL";}
-}
+### Connection Settings Section
 
-public static string PersonalAccessToken { 
-    get {return "PAT from Azure DevOps";}
-}
+| Property | Description |
+|----------|------------ |
+|TfsUri | The azure devops url. |
+|PersonalAccessToken| The azure devops personal access token with only basic permissions |
+|AzureStorageConnectionString| The azure table connection string. |
 
-public static string AzureStorageConnectionString { 
-    get {return "Azure Table connection string"; }
-}
-```
+### Project Settings Section
 
-### Project Metadata
-To specify the projects to be synchronized it is necessary (*at least for now*) to indicate the Project Name; Area Path and Team Name. 
-
-```C#
- /// <summary>
-/// Main Class.
-/// </summary>
-class Program
-{
-    static async Task Main(string[] args)
-    {
-        Console.Write("Start Sincronization....");
-
-        // List of projects to get data.
-        // Project Name; Area Path, Team Name
-        var appsProjects = new List<Tuple<string,string,string>>{
-                Tuple.Create("Project_A","Project_A\\Apollo","Project A Team"),
-        };
-```
+| Property | Description |
+|----------|------------ |
+|ProjectName | The project name. You can get this information you project url. |
+|AreaPath| The work itens area path. You can get this from the settings in you project |
+|TeamName| The team name. You can get this from the security in you project  |

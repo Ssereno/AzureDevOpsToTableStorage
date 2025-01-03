@@ -28,7 +28,7 @@ namespace AzureDevOpsToPowerBI
             response.EnsureSuccessStatusCode();
 
             var responseBody = await response.Content.ReadAsStringAsync();
-            var workItems = JsonSerializer.Deserialize<WorkItemResponse>(responseBody);
+            var workItems = JsonSerializer.Deserialize<AreaWorkItemResponse>(responseBody);
             var areas = new List<Area>();
 
             foreach (var item in workItems.Value)
@@ -44,14 +44,13 @@ namespace AzureDevOpsToPowerBI
 
             return areas;
         }
-
-        /// <summary>
-        /// Allow access to the json response.
-        /// </summary>
-        public class WorkItemResponse
-        {
-            [JsonPropertyName("value")]
-            public List<Area> Value { get; set; }
-        }
+    }
+    /// <summary>
+    /// Allow access to the json response.
+    /// </summary>
+    internal class AreaWorkItemResponse
+    {
+        [JsonPropertyName("value")]
+        public List<Area> Value { get; set; }
     }
 }

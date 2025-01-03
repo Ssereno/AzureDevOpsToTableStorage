@@ -4,6 +4,9 @@ using System.Text.Json.Serialization;
 
 namespace AzureDevOpsToPowerBI
 {
+    /// <summary>
+    /// Manager to handle with the task entity.
+    /// </summary>
     internal static class TaskManager
     {
         internal static async Task<List<TfsTasks>> GetTfsTasks(string projectname, string areapath)
@@ -20,7 +23,7 @@ namespace AzureDevOpsToPowerBI
             response.EnsureSuccessStatusCode();
 
             var responseBody = await response.Content.ReadAsStringAsync();
-            var workItems = JsonSerializer.Deserialize<WorkItemResponse>(responseBody);
+            var workItems = JsonSerializer.Deserialize<TaskWorkItemResponse>(responseBody);
             var tasks = new List<TfsTasks>();
 
             foreach (var item in workItems.Value)
@@ -43,11 +46,13 @@ namespace AzureDevOpsToPowerBI
 
             return tasks;
         }
-
-        public class WorkItemResponse
-        {
-            [JsonPropertyName("value")]
-            public List<TfsTasks> Value { get; set; }
-        }
+    }
+    /// <summary>
+    /// Allow access to the json response.
+    /// </summary>
+    internal class TaskWorkItemResponse
+    {
+        [JsonPropertyName("value")]
+        public List<TfsTasks> Value { get; set; }
     }
 }

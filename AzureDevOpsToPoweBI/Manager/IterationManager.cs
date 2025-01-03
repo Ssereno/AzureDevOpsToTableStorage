@@ -6,6 +6,9 @@ using System.Text.Json.Serialization;
 
 namespace AzureDevOpsToPowerBI
 {
+    /// <summary>
+    /// Manager to handle with the iteration entity.
+    /// </summary>
     internal static class IterationManager
     {
         internal static async Task<List<Iteration>> GetTfsIterations(string projectname, string teamName)
@@ -22,7 +25,7 @@ namespace AzureDevOpsToPowerBI
             response.EnsureSuccessStatusCode();
 
             var responseBody = await response.Content.ReadAsStringAsync();
-            var workItems = JsonSerializer.Deserialize<WorkItemResponse>(responseBody);
+            var workItems = JsonSerializer.Deserialize<IterationWorkItemResponse>(responseBody);
             var iteration = new List<Iteration>();
 
             foreach (var item in workItems.Value)
@@ -42,11 +45,13 @@ namespace AzureDevOpsToPowerBI
 
             return iteration;
         }
-
-        public class WorkItemResponse
-        {
-            [JsonPropertyName("value")]
-            public List<Iteration> Value { get; set; }
-        }
+    }
+    /// <summary>
+    /// Allow access to the json response.
+    /// </summary>
+    internal class IterationWorkItemResponse
+    {
+        [JsonPropertyName("value")]
+        public List<Iteration> Value { get; set; }
     }
 }

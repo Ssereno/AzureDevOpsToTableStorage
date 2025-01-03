@@ -1,11 +1,12 @@
 using System.Net.Http.Headers;
-
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using System.Collections.Generic;
 
 namespace AzureDevOpsToPowerBI
 {
+    /// <summary>
+    /// Manager to handle with the user story entity.
+    /// </summary>
     internal static class UserStoriesManager
     {
         internal static async Task<List<UserStory>> GetTfsUserStories(string projectname, string areapath)
@@ -22,7 +23,7 @@ namespace AzureDevOpsToPowerBI
             response.EnsureSuccessStatusCode();
 
             var responseBody = await response.Content.ReadAsStringAsync();
-            var workItems = JsonSerializer.Deserialize<WorkItemResponse>(responseBody);
+            var workItems = JsonSerializer.Deserialize<UsWorkItemResponse>(responseBody);
             var userStories = new List<UserStory>();
 
             foreach (var item in workItems.Value)
@@ -50,11 +51,13 @@ namespace AzureDevOpsToPowerBI
 
             return userStories;
         }
-
-        public class WorkItemResponse
-        {
-            [JsonPropertyName("value")]
-            public List<UserStory> Value { get; set; }
-        }
+    }
+    /// <summary>
+    /// Allow access to the json response.
+    /// </summary>
+    internal class UsWorkItemResponse
+    {
+        [JsonPropertyName("value")]
+        public List<UserStory> Value { get; set; }
     }
 }
