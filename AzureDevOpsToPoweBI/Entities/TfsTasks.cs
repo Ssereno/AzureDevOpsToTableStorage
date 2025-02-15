@@ -33,5 +33,11 @@ namespace AzureDevOpsToPowerBI
 
         [JsonPropertyName("CompletedWork")]
         public decimal? CompletedWork{ get; set; }
+
+        [JsonPropertyName("CreatedDate")]
+        public string? CreatedDate { get; set; }
+
+        [JsonPropertyName("ClosedDate")]
+        public string? ClosedDate { get; set; }
     }
 }

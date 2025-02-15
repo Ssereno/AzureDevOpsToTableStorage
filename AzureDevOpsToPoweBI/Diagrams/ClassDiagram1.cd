@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="AzureDevOpsToPowerBI.Area">
+    <Position X="1" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAEAAAAAI=</HashCode>
+      <FileName>Entities\Area.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AzureDevOpsToPowerBI.Iteration">
+    <Position X="3" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQAAAAAAgAAAAAAEAAAAAgAAAAAAAAAAAAAUAAAAA=</HashCode>
+      <FileName>Entities\Iteration.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AzureDevOpsToPowerBI.ProjectProfile">
+    <Position X="11.5" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgAAAAAAAEAAAAAAAAAAgAAAAAAAESAEgAI=</HashCode>
+      <FileName>Entities\ProjectProfile.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AzureDevOpsToPowerBI.SprintCapacity">
+    <Position X="9" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACQAAAAAAAABAAACAAAAAAAAAAAAAAAAAAAAQAAAAA=</HashCode>
+      <FileName>Entities\SprintCapacity.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AzureDevOpsToPowerBI.TfsTasks">
+    <Position X="5" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACAAAIABAAEAAAAAAAAAAAAAAAAQABgAABQAAAAY=</HashCode>
+      <FileName>Entities\TfsTasks.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AzureDevOpsToPowerBI.UserStory">
+    <Position X="7" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAACAAAIAEAAEAAAAAAAAACAAAQAAQABgAABQgAAAI=</HashCode>
+      <FileName>Entities\UserStory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AzureDevOpsToPowerBI.AzureTableBase">
+    <Position X="5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAkAACAAAAAAQAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>AzureEntities\TableUserStory.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

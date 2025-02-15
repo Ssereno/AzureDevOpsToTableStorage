@@ -1,4 +1,5 @@
-﻿using System.Configuration;
+﻿using Microsoft.VisualBasic;
+using System.Configuration;
 
 namespace AzureDevOpsToPowerBI.Settings.General
 {
@@ -30,5 +31,15 @@ namespace AzureDevOpsToPowerBI.Settings.General
         {
             get => (string)this["AzureStorageConnectionString"];
         }
+
+        /// <summary>
+        /// Work Item synchronization date.
+        /// </summary>
+        [ConfigurationProperty("WorkItemSyncDate", IsRequired = true)]
+        public string WorkItemSyncDate
+        {
+            get => (string)this["WorkItemSyncDate"];
+        }
+
     }
 }
