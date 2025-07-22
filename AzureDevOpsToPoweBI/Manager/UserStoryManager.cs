@@ -9,7 +9,13 @@ namespace AzureDevOpsToPowerBI
     /// </summary>
     internal static class UserStoriesManager
     {
-        internal static async Task<List<UserStory>> GetTfsUserStories(string projectname, string areapath)
+        /// <summary>
+        /// Get all user stories from ADO project.
+        /// </summary>
+        /// <param name="projectname">The project name.</param>
+        /// <param name="areapath">The project Area Path.</param>
+        /// <returns>The user stories list.</returns>
+        internal static async Task<List<UserStory>> GetTfsUserStories(string projectkey, string projectname, string areapath)
         {
             var client = new HttpClient();
 
@@ -17,7 +23,7 @@ namespace AzureDevOpsToPowerBI
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic",
                 Convert.ToBase64String(System.Text.ASCIIEncoding.ASCII.GetBytes($"{string.Empty}:{AppSettings.PersonalAccessToken}")));
 
-            string tfsUri = string.Format($"{AppSettings.TfsUri}/{{0}}/_odata/v4.0-preview/WorkItems?$select=WorkItemId,Title,WorkItemType,State,StoryPoints,LeadTimeDays,CycleTimeDays,CreatedDate,ResolvedDate,AreaSK,IterationSK,ActivatedDate,ClosedDate,ParentWorkItemId, TagNames&$filter=WorkItemType eq 'User Story' and startswith(Area/AreaPath,'{{1}}') and not contains(State, 'Removed') and CreatedDate ge {{2}} &$orderby=CreatedDate desc",projectname,areapath,AppSettings.WorkItemSyncDate);
+            string tfsUri = string.Format($"{AppSettings.TfsUri}/{{0}}/_odata/v4.0-preview/WorkItems?$select=WorkItemId,Title,WorkItemType,State,StoryPoints,LeadTimeDays,CycleTimeDays,CreatedDate,ResolvedDate,AreaSK,IterationSK,ActivatedDate,ClosedDate,CompletedDate,ParentWorkItemId, TagNames&$filter=WorkItemType eq 'User Story' and startswith(Area/AreaPath,'{{1}}') and not contains(State, 'Removed') and CreatedDate ge {{2}} &$orderby=CreatedDate desc",projectname,areapath,AppSettings.WorkItemSyncDate);
 
             var response = await client.GetAsync(tfsUri);
             response.EnsureSuccessStatusCode();
@@ -30,7 +36,7 @@ namespace AzureDevOpsToPowerBI
             {
                 userStories.Add(new UserStory
                 {
-                    PartitionKey = projectname,
+                    PartitionKey = projectkey,
                     RowKey = item.WorkItemId.ToString(),
                     Title= item.Title,
                     State= item.State,
@@ -39,13 +45,13 @@ namespace AzureDevOpsToPowerBI
                     LeadTimeDays= item.LeadTimeDays,
                     CycleTimeDays= item.CycleTimeDays,
                     CreatedDate= item.CreatedDate,
-                    ResolvedDate= item.ResolvedDate,
                     AreaSK= item.AreaSK,
                     IterationSK= item.IterationSK,
-                    ActivatedDate= item.ActivatedDate,
-                    ClosedDate = item.ClosedDate,
                     ParentWorkItemId = item.ParentWorkItemId,
-                    TagNames = item.TagNames
+                    TagNames = item.TagNames,
+                    ActivatedDate = DateTimeHelper.GetEffectiveActivatedDate(item.CompletedDate, item.ActivatedDate),
+                    ResolvedDate = DateTimeHelper.GetEffectiveResolutionDate(item.CompletedDate, item.ClosedDate, item.ResolvedDate),
+                    ClosedDate = DateTimeHelper.GetEffectiveCompletionDate(item.CompletedDate, item.ClosedDate)
                 });
             }
 

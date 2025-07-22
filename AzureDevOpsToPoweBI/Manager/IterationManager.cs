@@ -11,7 +11,40 @@ namespace AzureDevOpsToPowerBI
     /// </summary>
     internal static class IterationManager
     {
-        internal static async Task<List<Iteration>> GetTfsIterations(string projectname, string teamName)
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <param name="projectkey"></param>
+        /// <param name="projectname"></param>
+        /// <param name="teamName"></param>
+        /// <returns></returns>
+        internal static async Task<List<Iteration>> GetTfsIterations(string projectkey, string projectname, string teamName)
+        {
+            return await GetTfsIterations_Internal(projectkey, projectname, teamName, 1);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="projectkey"></param>
+        /// <param name="projectname"></param>
+        /// <param name="teamName"></param>
+        /// <param name="iterationlevel"></param>
+        /// <returns></returns>
+        internal static async Task<List<Iteration>> GetTfsIterations(string projectkey, string projectname, string teamName, int iterationlevel)
+        {
+            return await GetTfsIterations_Internal(projectkey, projectname, teamName, iterationlevel);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="projectkey"></param>
+        /// <param name="projectname"></param>
+        /// <param name="teamName"></param>
+        /// <param name="iterationlevel"></param>
+        /// <returns></returns>
+        private static async Task<List<Iteration>> GetTfsIterations_Internal(string projectkey, string projectname, string teamName, int iterationlevel)
         {
             var client = new HttpClient();
 
@@ -19,7 +52,7 @@ namespace AzureDevOpsToPowerBI
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic",
                 Convert.ToBase64String(System.Text.ASCIIEncoding.ASCII.GetBytes($"{string.Empty}:{AppSettings.PersonalAccessToken}")));
                 
-            string tfsUri = string.Format($"{AppSettings.TfsUri}/{{0}}/_odata/v4.0-preview/Iterations?$select=IterationName,IterationPath,IterationSK,StartDate,EndDate",projectname);
+            string tfsUri = string.Format($"{AppSettings.TfsUri}/{{0}}/_odata/v4.0-preview/Iterations?$select=IterationName,IterationPath,IterationSK,StartDate,EndDate&$filter=IterationLevel{{2}} eq '{{1}}'",projectname,projectkey, iterationlevel);
 
             var response = await client.GetAsync(tfsUri);
             response.EnsureSuccessStatusCode();
@@ -32,7 +65,7 @@ namespace AzureDevOpsToPowerBI
             {
                 iteration.Add(new Iteration
                 {
-                    PartitionKey = projectname,
+                    PartitionKey = projectkey,
                     RowKey = item.IterationSK.ToString(),
                     IterationName = item.IterationName,
                     IterationPath = item.IterationPath,

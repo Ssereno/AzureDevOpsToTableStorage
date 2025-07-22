@@ -11,7 +11,7 @@ namespace AzureDevOpsToPoweBI.Settings.TeamAndProjectSettings
 
         protected override object GetElementKey(ConfigurationElement element)
         {
-            return ((TeamProjectSettings)element).ProjectName;
+            return ((TeamProjectSettings)element).ProjectKey;
         }
 
         public new IEnumerator<TeamProjectSettings> GetEnumerator()

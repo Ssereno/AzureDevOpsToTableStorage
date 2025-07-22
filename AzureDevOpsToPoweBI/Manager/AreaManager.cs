@@ -15,7 +15,7 @@ namespace AzureDevOpsToPowerBI
         /// <param name="projectname">The project name.</param>
         /// <param name="areapath">The Area or project iteration.</param>
         /// <returns></returns>
-        internal static async Task<List<Area>> GetAreas(string projectname, string areapath)
+        internal static async Task<List<Area>> GetAreas(string projectkey, string projectname, string areapath)
         {
             var client = new HttpClient();
 
@@ -35,7 +35,7 @@ namespace AzureDevOpsToPowerBI
             {
                 areas.Add(new Area
                 {
-                    PartitionKey = projectname,
+                    PartitionKey = projectkey,
                     RowKey = item.AreaSK.ToString(),
                     AreaPath = item.AreaPath,
                     AreaSK = item.AreaSK    

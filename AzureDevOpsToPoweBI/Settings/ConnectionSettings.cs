@@ -3,6 +3,9 @@ using System.Configuration;
 
 namespace AzureDevOpsToPowerBI.Settings.General
 {
+    /// <summary>
+    /// Class to haldle the Connection section.
+    /// </summary>
     public class ConnectionSettings : ConfigurationElement
     {
         /// <summary>

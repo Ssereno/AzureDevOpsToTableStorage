@@ -48,5 +48,8 @@ namespace AzureDevOpsToPowerBI
 
         [JsonPropertyName("TagNames")]
         public string? TagNames{ get; set; }
+
+        [JsonPropertyName("CompletedDate")]
+        public string? CompletedDate { get; set; }
     }
 }

@@ -55,43 +55,52 @@ namespace AzureDevOpsToPowerBI
                 {
                     foreach (var project in teamProjectSettings.Projects)
                     {
+                        // Update by Date or Full update
                         if ((option == "1") || (option == "3"))
                         {
-                            Console.Write($"User Stories for {project.ProjectName}. \n");
-                            var userStories = await UserStoriesManager.GetTfsUserStories(project.ProjectName, project.AreaPath);
+                            Console.Write($"User Stories for {project.ProjectKey}. \n");
+                            var userStories = await UserStoriesManager.GetTfsUserStories(project.ProjectKey, project.ProjectName, project.AreaPath);
                             await AzureTablesManager<UserStory>.InsertIntoAzureTableBulkAsync(userStories, "UserStories");
 
-                            Console.Write($"Tasks for {project.ProjectName}. \n");
-                            var tasks = await TaskManager.GetTfsTasks(project.ProjectName, project.AreaPath);
+                            Console.Write($"Tasks for {project.ProjectKey}. \n");
+                            var tasks = await TaskManager.GetTfsTasks(project.ProjectKey, project.ProjectName, project.AreaPath);
                             await AzureTablesManager<TfsTasks>.InsertIntoAzureTableBulkAsync(tasks, "Tasks");
+
+                            Console.Write($"Bugs for {project.ProjectKey}. \n");
+                            var bugs = await BugManager.GetBugs(project.ProjectKey, project.ProjectName, project.AreaPath);
+                            await AzureTablesManager<Bug>.InsertIntoAzureTableBulkAsync(bugs, "Bugs");
                         }
                         else if (option == "2")
                         {
-                            Console.Write($"User Stories for {project.ProjectName}. \n");
-                            var userStories = await UserStoriesManager.GetTfsUserStories(project.ProjectName, project.AreaPath);
+                            Console.Write($"User Stories for {project.ProjectKey}. \n");
+                            var userStories = await UserStoriesManager.GetTfsUserStories(project.ProjectKey, project.ProjectName, project.AreaPath);
                             await AzureTablesManager<UserStory>.UpsertIntoAzureTableAsync(userStories, "UserStories");
 
-                            Console.Write($"Tasks for {project.ProjectName}. \n");
-                            var tasks = await TaskManager.GetTfsTasks(project.ProjectName, project.AreaPath);
+                            Console.Write($"Tasks for {project.ProjectKey}. \n");
+                            var tasks = await TaskManager.GetTfsTasks(project.ProjectKey, project.ProjectName, project.AreaPath);
                             await AzureTablesManager<TfsTasks>.UpsertIntoAzureTableAsync(tasks, "Tasks");
+
+                            Console.Write($"Bugs for {project.ProjectKey}. \n");
+                            var bugs = await BugManager.GetBugs(project.ProjectKey, project.ProjectName, project.AreaPath);
+                            await AzureTablesManager<Bug>.UpsertIntoAzureTableAsync(bugs, "Bugs");
                         }
 
                         // Sync areas
-                        Console.Write($"Area for {project.ProjectName}. \n");
-                        var areas = await AreaManager.GetAreas(project.ProjectName, project.AreaPath);
+                        Console.Write($"Area for {project.ProjectKey}. \n");
+                        var areas = await AreaManager.GetAreas(project.ProjectKey, project.ProjectName, project.AreaPath);
                         await AzureTablesManager<Area>.UpsertIntoAzureTableAsync(areas, "Areas");
 
                         // Sync iterations
-                        Console.Write($"Iterations for {project.ProjectName}. \n");
-                        var iterations = await IterationManager.GetTfsIterations(project.ProjectName, project.TeamName);
+                        Console.Write($"Iterations for {project.ProjectKey}. \n");
+                        var iterations = await IterationManager.GetTfsIterations(project.ProjectKey, project.ProjectName, project.TeamName, project.IterationLevel);
                         await AzureTablesManager<Iteration>.UpsertIntoAzureTableAsync(iterations, "Iteration");
 
                         // Sync Sprint Capacity
-                        Console.Write($"Sprint Capacity for {project.ProjectName}. \n");
-                        var SprintCapacity = await SprintCapacityManager.GetCapacityAsync(project.ProjectName, project.TeamName);
+                        Console.Write($"Sprint Capacity for {project.ProjectKey}. \n");
+                        var SprintCapacity = await SprintCapacityManager.GetCapacityAsync(project.ProjectKey, project.ProjectName, project.TeamName);
                         await AzureTablesManager<SprintCapacity>.UpsertIntoAzureTableAsync(SprintCapacity, "SprintCapacity");
 
-                        Console.Write($"{project.ProjectName} Done. \n");
+                        Console.Write($"{project.ProjectKey} Done. \n");
                     }
 
                     Console.Write("All Done......");
@@ -132,6 +141,9 @@ namespace AzureDevOpsToPowerBI
 
                     if (await AzureTablesManager<TfsTasks>.TableExistsAsync("Tasks"))
                         await AzureTablesManager<TfsTasks>.DeleteAllEntitieswithWithFilterAsync("Tasks", $"CreatedDate ge '{AppSettings.WorkItemSyncDate}'");
+
+                    if (await AzureTablesManager<TfsTasks>.TableExistsAsync("Bugs"))
+                        await AzureTablesManager<TfsTasks>.DeleteAllEntitieswithWithFilterAsync("Bugs", $"CreatedDate ge '{AppSettings.WorkItemSyncDate}'");
                 }
                 else if (option == "2")
                 {
@@ -140,6 +152,9 @@ namespace AzureDevOpsToPowerBI
 
                     if (await AzureTablesManager<TfsTasks>.TableExistsAsync("Tasks"))
                         await AzureTablesManager<TfsTasks>.DeleteAllEntitieswithWithFilterAsync("Tasks", "State ne 'Closed'");
+
+                    if (await AzureTablesManager<TfsTasks>.TableExistsAsync("Bugs"))
+                        await AzureTablesManager<TfsTasks>.DeleteAllEntitieswithWithFilterAsync("Bugs", "State ne 'Closed'");
                 }
                 else if (option == "3")
                 {
@@ -148,6 +163,9 @@ namespace AzureDevOpsToPowerBI
 
                     if (await AzureTablesManager<TfsTasks>.TableExistsAsync("Tasks"))
                         await AzureTablesManager<TfsTasks>.DeleteAllEntitiesAsync("Tasks");
+
+                    if (await AzureTablesManager<TfsTasks>.TableExistsAsync("Bugs"))
+                        await AzureTablesManager<TfsTasks>.DeleteAllEntitiesAsync("Bugs");
                 }
 
                 Console.Write($"Data cleaning done. Prepare to get new data greater or equal to: {AppSettings.WorkItemSyncDate}. \n");

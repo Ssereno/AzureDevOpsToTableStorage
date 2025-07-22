@@ -7,7 +7,7 @@ namespace AzureDevOpsToPowerBI
 {
     internal static class SprintCapacityManager
     {
-        internal static async Task<List<SprintCapacity>> GetCapacityAsync(string projectName, string teamName)
+        internal static async Task<List<SprintCapacity>> GetCapacityAsync(string projectkey, string projectName, string teamName)
         {
             try
             {
@@ -87,9 +87,9 @@ namespace AzureDevOpsToPowerBI
 
                     SprintCapacity.Add(new SprintCapacity
                     {
-                            PartitionKey = projectName,
+                            PartitionKey = projectkey,
                             RowKey = iteration.Id.ToString(),
-                            ProjectName = projectName,
+                            ProjectName = projectkey,
                             SprintName = iteration.Name,
                             IterationSK = iteration.Id.ToString(),
                             SprintPath = iteration.Path,
