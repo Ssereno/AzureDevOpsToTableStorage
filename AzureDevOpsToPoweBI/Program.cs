@@ -1,4 +1,5 @@
 ﻿using AzureDevOpsToPowerBI.Settings;
+using AzureDevOpsToPowerBI.Settings.General;
 using System.Configuration;
 
 namespace AzureDevOpsToPowerBI
@@ -33,6 +34,7 @@ namespace AzureDevOpsToPowerBI
             AppSettings.TfsUri = connecionSettings.Connection.TfsUri;
             AppSettings.PersonalAccessToken = connecionSettings.Connection.PersonalAccessToken;
             AppSettings.WorkItemSyncDate = connecionSettings.Connection.WorkItemSyncDate;
+            AppSettings.Tags = ParseTags(connecionSettings.FilterTag.Tags);
 
             var teamProjectSettings = ConfigurationManager.GetSection("TeamProject") as TeamProjectSetting;
 
@@ -128,7 +130,7 @@ namespace AzureDevOpsToPowerBI
         /// </summary>
         /// <param name="option">The syncronization mode.</param>
         /// <returns></returns>
-        static  async Task DeleteDataBeforeSync(string option)
+        private static  async Task DeleteDataBeforeSync(string option)
         {
             try
             {
@@ -181,7 +183,7 @@ namespace AzureDevOpsToPowerBI
         /// This table is optional and is fed by hand.
         /// </summary>
         /// <returns></returns>
-        static async Task CreateProjectProfile()
+        private static async Task CreateProjectProfile()
         {
             var projectProfiles = new List<ProjectProfile>();
 
@@ -209,6 +211,23 @@ namespace AzureDevOpsToPowerBI
                 throw new Exception(ex.Message.ToString(), ex);
             }
            
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="tagString"></param>
+        /// <returns></returns>
+        private static List<string> ParseTags(string tagString)
+        {
+            if (string.IsNullOrWhiteSpace(tagString))
+                return new List<string>();
+
+            return tagString
+                .Split(';')
+                .Select(tag => tag.Trim())
+                .Where(tag => !string.IsNullOrEmpty(tag))
+                .ToList();
         }
     }
 }

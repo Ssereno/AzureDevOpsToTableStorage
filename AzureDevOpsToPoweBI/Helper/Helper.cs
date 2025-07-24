@@ -3,7 +3,7 @@
     /// <summary>
     /// 
     /// </summary>
-    internal static class DateTimeHelper
+    internal static class InternalHelper
     {
         internal static string GetEffectiveCompletionDate(string completedDateStr, string closedDateStr)
         {
@@ -65,5 +65,24 @@
             return string.Empty;
         }
 
+        /// <summary>
+        /// Build the filter for the tags
+        /// </summary>
+        /// <param name="excludedTags">a list of tags to exclude</param>
+        /// <returns></returns>
+        public static string GetTagFilter(List<string> excludedTags)
+        {
+            if (excludedTags == null || excludedTags.Count == 0)
+                return string.Empty;
+
+            var tagFilters = excludedTags
+                .Select(tag => $"Tags/any(t:t/TagName eq '{tag}')")
+                .ToList();
+
+            string combinedTagFilter = string.Join(" and not ", tagFilters);
+            string finalFilter = $"({combinedTagFilter})";
+
+            return finalFilter;
+        }
     }
 }

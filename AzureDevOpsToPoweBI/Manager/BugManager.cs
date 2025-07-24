@@ -49,9 +49,9 @@ namespace AzureDevOpsToPowerBI
                     Custom_TicketID = item.Custom_TicketID,
                     Custom_TicketPriority = item.Custom_TicketPriority,
                     ParentWorkItemId = item.ParentWorkItemId,
-                    ActivatedDate = DateTimeHelper.GetEffectiveActivatedDate(item.CompletedDate, item.ActivatedDate),
-                    ResolvedDate = DateTimeHelper.GetEffectiveResolutionDate(item.CompletedDate, item.ClosedDate, item.ResolvedDate),
-                    ClosedDate = DateTimeHelper.GetEffectiveCompletionDate(item.CompletedDate, item.ClosedDate)
+                    ActivatedDate = InternalHelper.GetEffectiveActivatedDate(item.CompletedDate, item.ActivatedDate),
+                    ResolvedDate = InternalHelper.GetEffectiveResolutionDate(item.CompletedDate, item.ClosedDate, item.ResolvedDate),
+                    ClosedDate = InternalHelper.GetEffectiveCompletionDate(item.CompletedDate, item.ClosedDate)
                 });
             }
 

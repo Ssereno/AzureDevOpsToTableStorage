@@ -11,5 +11,8 @@ namespace AzureDevOpsToPowerBI.Settings
     {
         [ConfigurationProperty("Connection")]
         public ConnectionSettings Connection => (ConnectionSettings)this["Connection"];
+
+        [ConfigurationProperty("FilterTag")]
+        public FilterTags FilterTag => (FilterTags)this["FilterTag"];
     }
 }

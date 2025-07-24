@@ -23,7 +23,7 @@ namespace AzureDevOpsToPowerBI
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic",
                 Convert.ToBase64String(System.Text.ASCIIEncoding.ASCII.GetBytes($"{string.Empty}:{AppSettings.PersonalAccessToken}")));
 
-            string tfsUri = string.Format($"{AppSettings.TfsUri}/{{0}}/_odata/v4.0-preview/WorkItems?$select=WorkItemId,Title,WorkItemType,State,StoryPoints,LeadTimeDays,CycleTimeDays,CreatedDate,ResolvedDate,AreaSK,IterationSK,ActivatedDate,ClosedDate,CompletedDate,ParentWorkItemId, TagNames&$filter=WorkItemType eq 'User Story' and startswith(Area/AreaPath,'{{1}}') and not contains(State, 'Removed') and CreatedDate ge {{2}} &$orderby=CreatedDate desc",projectname,areapath,AppSettings.WorkItemSyncDate);
+            string tfsUri = string.Format($"{AppSettings.TfsUri}/{{0}}/_odata/v4.0-preview/WorkItems?$select=WorkItemId,Title,WorkItemType,State,StoryPoints,LeadTimeDays,CycleTimeDays,CreatedDate,ResolvedDate,AreaSK,IterationSK,ActivatedDate,ClosedDate,CompletedDate,ParentWorkItemId, TagNames&$filter=WorkItemType eq 'User Story' and State ne 'Removed' and startswith(Area/AreaPath,'{{1}}') and not {{3}} and CreatedDate ge {{2}} &$orderby=CreatedDate desc",projectname,areapath,AppSettings.WorkItemSyncDate, InternalHelper.GetTagFilter(AppSettings.Tags));
 
             var response = await client.GetAsync(tfsUri);
             response.EnsureSuccessStatusCode();
@@ -49,9 +49,9 @@ namespace AzureDevOpsToPowerBI
                     IterationSK= item.IterationSK,
                     ParentWorkItemId = item.ParentWorkItemId,
                     TagNames = item.TagNames,
-                    ActivatedDate = DateTimeHelper.GetEffectiveActivatedDate(item.CompletedDate, item.ActivatedDate),
-                    ResolvedDate = DateTimeHelper.GetEffectiveResolutionDate(item.CompletedDate, item.ClosedDate, item.ResolvedDate),
-                    ClosedDate = DateTimeHelper.GetEffectiveCompletionDate(item.CompletedDate, item.ClosedDate)
+                    ActivatedDate = InternalHelper.GetEffectiveActivatedDate(item.CompletedDate, item.ActivatedDate),
+                    ResolvedDate = InternalHelper.GetEffectiveResolutionDate(item.CompletedDate, item.ClosedDate, item.ResolvedDate),
+                    ClosedDate = InternalHelper.GetEffectiveCompletionDate(item.CompletedDate, item.ClosedDate)
                 });
             }
 

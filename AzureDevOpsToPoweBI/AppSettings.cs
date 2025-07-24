@@ -7,6 +7,7 @@ namespace AzureDevOpsToPowerBI
         private static string _personalAccessToken;
         private static string _azureStorageConnectionString;
         private static string _workItemSyncDate;
+        private static List<string> _tags;
 
         internal static string TfsUri
         {
@@ -30,6 +31,12 @@ namespace AzureDevOpsToPowerBI
         {
             get { return _workItemSyncDate; }
             set { _workItemSyncDate = value; }
+        }
+
+        public static List<string> Tags
+        {
+            get { return _tags; }
+            set { _tags = value; }
         }
     }
 }
